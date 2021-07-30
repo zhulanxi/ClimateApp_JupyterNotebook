@@ -3,6 +3,8 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from scipy.special import gamma, gammaincc
 from scipy.optimize import fsolve
+import warnings
+warnings.filterwarnings("error")
 
 D = 1.66
 sigma = 5.67e-8
@@ -56,7 +58,11 @@ def taus(p0, T0, n, ga, a,
     
     tau0est = kir*p0*100000/g #100000 for bar to Pa conversion
 
-    solutions = fsolve(equations,(tau0est,taurcest))
+    try:
+        solutions = fsolve(equations,(tau0est,taurcest))
+    except RuntimeWarning:
+        print("No solution")
+        return (-9999, -9999)
 
         
     print("Two short-wave channels with attenuation.")

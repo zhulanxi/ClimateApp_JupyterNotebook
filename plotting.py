@@ -105,6 +105,9 @@ def plot_TP(p0, T0, n, ga, a, F1, F2, Fi, kuv, kop, kir, g, taurcest):
     else:    
         tau0, taurc = taus(p0, T0, n, ga, a, F1, F2, Fi, k1, k2, kir, g, taurcest)
         
+    if tau0 == -9999:
+        return
+    
     ps = np.linspace(0.001,p0,10000)
     #the lower limit is set to p0 by default
     #possible to become user-defined
