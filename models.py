@@ -89,7 +89,11 @@ def simpleRC(p0, T0, n, ga, a, F, Fi, kir, g, taurcest=1):
     
     tau0est = kir*p0*100000/g
     
-    solutions = fsolve(equations,(tau0est,taurcest))
+    try:
+        solutions = fsolve(equations,(tau0est,taurcest))
+    except RuntimeWarning:
+        print("No solution")
+        return (-9999, -9999)
     
     print("Simplest case without short-wave attenuation.")
     
@@ -119,7 +123,11 @@ def single_atten(p0, T0, n, ga, a, F, Fi, k, kir, g, taurcest=1):
     
     tau0est = kir*p0*100000/g
     
-    solutions = fsolve(equations,(tau0est,taurcest))
+    try:
+        solutions = fsolve(equations,(tau0est,taurcest))
+    except RuntimeWarning:
+        print("No solution")
+        return (-9999, -9999)
     
     print("Single short-wave channel with attenuation.")
     
