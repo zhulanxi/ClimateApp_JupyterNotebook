@@ -60,31 +60,31 @@ def plot_TP(p0, T0, n, ga, a, F1, F2, Fi, kuv, kop, kir, g, taurcest):
     tmp = True
     
     if p0 < 0.:
-        print('$p_0$ must be non-negative.')
+        print('p_0 must be non-negative.')
         tmp = False
     if T0 < 0.:
-        print('$T_0$ must be non-negative.')
+        print('T_0 must be non-negative.')
         tmp = False
     if (n>2. or n<1.):
-        print('$n$ takes value between 1 and 2.')
+        print('n takes value between 1 and 2.')
         tmp = False
     if (ga>2. or ga<1.):
-        print('$\gamma$ takes value between 1 and 2.')
+        print('γ takes value between 1 and 2.')
         tmp = False
     if (a>1. or a<0.):
-        print('$\alpha$ takes value between 0 and 1.')
+        print('α takes value between 0 and 1.')
         tmp = False
     if (F1<0. or F2<0. or Fi<0):
         print('All fluxes must be non-negative.')
         tmp = False
     if (k1<0. or k2<0.):
-        print('All $\kappa$\' must be non-negative.')
+        print('All κ must be non-negative.')
         tmp = False
     if g<0.:
-        print('$g$ must be non-negative.')
+        print('g must be non-negative.')
         tmp = False
     if taurcest<0.:
-        print(r'$\text{Est. }\tau_\mathrm{rc}$ must be non-negative.')
+        print('Est. τ must be non-negative.')
         tmp = False
               
     if not tmp:
