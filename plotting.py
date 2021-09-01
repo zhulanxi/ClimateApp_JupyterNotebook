@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from models import taus, simpleRC, single_atten, Erad, Econv
+from models import sigma, taus, simpleRC, single_atten, Erad, Econv
 
 def plot_TP(p0, T0, n, ga, a, F1, F2, Fi, kuv, kop, kir, g, taurcest):
     """
@@ -59,6 +59,9 @@ def plot_TP(p0, T0, n, ga, a, F1, F2, Fi, kuv, kop, kir, g, taurcest):
     #Handling inputs that don't make sense
     tmp = True
     
+    #(F1+F2+Fi)/2=sigma*Tskin^4 sets the lower limit for T0
+    Tskin = ((F1+F2+Fi)/(2*sigma))**(1/4)
+    
     if p0 < 0.:
         print('p_0 must be non-negative.')
         tmp = False
@@ -86,13 +89,17 @@ def plot_TP(p0, T0, n, ga, a, F1, F2, Fi, kuv, kop, kir, g, taurcest):
     if taurcest<0.:
         print('Est. τ must be non-negative.')
         tmp = False
-              
+    """
+    if T0 < Tskin:
+        print('The entered temperature at reference level (T0)\n is lower than the atmospheric skin temperature.')
+        tmp = False
+    """          
     if not tmp:
         return
             
             
     
-    fig, ax1 = plt.subplots(figsize=(8,6))
+    fig, ax1 = plt.subplots(figsize=(7,5))
     ax2 = ax1.twinx()#for y-axes on both sides
         
     if k1 == 0.0000 and k2 == 0.0000:
@@ -139,24 +146,28 @@ def plot_TP(p0, T0, n, ga, a, F1, F2, Fi, kuv, kop, kir, g, taurcest):
 
     ax1.plot([min(Ts)-20, max(Ts)+20],[prc,prc],'k:',label="RC boundary")
     ax1.plot([min(Ts)-20, max(Ts)+20],[pmin,pmin],linestyle='dashdot',color='k',label="Tropopause")
-
-    plt.title('Atmospheric temperature-pressure profile\n Calculated parameters:'+
-              r'$\tau_0=$'+
-              str(round(tau0,2))+
-              r', $\tau_\mathrm{rc}=$'+
-              str(round(taurc,2))+'\n'+
-              r', $\tau_\mathrm{tp}=$'+
-              str(round(tautp,2))+'bar'+
-              r', $p_\mathrm{tp}=$'+
-              str(round(pmin,2)))
+    
+    #plt.title('Atmospheric temperature-pressure profile\n Calculated parameters:'+
+     #         r'$\tau_0=$'+
+              #str(round(tau0,2))+
+              #r', $\tau_\mathrm{rc}=$'+
+              #str(round(taurc,2)))
+    
+    plt.title('Atmospheric temperature-pressure profile\n Temperatures:'+
+              r'$T_\mathrm{surf}=$'+
+              str(int(T0))+
+              r'K , $T_\mathrm{tropo}=$'+
+              str(int(min(Ts)))+
+              r'K , $T_\mathrm{strato}=$'+
+              str(int(Ts[170]))+'K',fontsize=15)
     
     plt.xlim(min(Ts)-20, max(Ts)+20)
     ax1.set_ylim(p0,.001)
     ax2.set_ylim(max(ts),min(ts))
     #ax2.set_ylim(min(zs),max(zs))
-    ax1.set_xlabel("Temperature [K]",fontsize=12)
-    ax1.set_ylabel("Pressure [bar]",fontsize=12)
-    ax2.set_ylabel("Thermal optical depth",fontsize=12)
+    ax1.set_xlabel("Temperature [K]",fontsize=13)
+    ax1.set_ylabel("Pressure [bar]",fontsize=13)
+    ax2.set_ylabel("Thermal optical depth",fontsize=13)
     #ax2.set_ylabel("Altitude (m)",fontsize=12)
 
     #Formatting
